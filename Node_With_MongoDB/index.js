@@ -1,6 +1,6 @@
 var mongodb =require('mongodb').MongoClient;
 
-var url = "mongodb://sakibdb:ErfPGIlg9SIZMUKX@sakibcluster-shard-00-00.vcdcb.mongodb.net:27017,sakibcluster-shard-00-01.vcdcb.mongodb.net:27017,sakibcluster-shard-00-02.vcdcb.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-pomb6m-shard-0&authSource=admin&retryWrites=true&w=majority"
+var url = ""
 
 var config = {
     useUnifiedTopology: true
@@ -13,7 +13,8 @@ mongodb.connect(url, config, (error,MyMongoClient)=>{
     else{
         console.log("Connection Successful")
         //insertData(MyMongoClient)
-        DeleteData(MyMongoClient)
+        //DeleteData(MyMongoClient)
+        findWithoutCondition(MyMongoClient)
     }
 })
 
@@ -57,4 +58,30 @@ const DeleteData = (MongoClient) => {
         };
     })
     
+}
+
+
+const DeleteMany = (MongoClient) => {
+
+    var mydatabase = MongoClient.db('university');
+    var mycollection = mydatabase.collection('students');
+
+    mycollection.deleteMany((error, ResultObject)=>{
+        if (error) {
+            console.log("Delete Failed");
+        }
+        else{
+            console.log("Data Delete Completed = " + ResultObject.result.n + " Items Delted.");
+        };
+    })
+    
+}
+
+const findWithoutCondition = (MongoClient) => {
+    var mydatabase = MongoClient.db('university');
+    var mycollection = mydatabase.collection('students');
+    var FindObj = {}
+    mycollection.findOne(FindObj, (error, results)=>{
+        console.log(results)
+    })
 }
